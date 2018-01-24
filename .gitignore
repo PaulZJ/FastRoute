@@ -9,3 +9,7 @@
 .externalNativeBuild
 /.idea/
 app/libs/
+router-annotation/libs/
+router-compiler/libs/
+router/libs/
+router/src/main/res/drawable/
