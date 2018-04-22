@@ -9,6 +9,8 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/krouter-annotation" />
+            <option value="$PROJECT_DIR$/krouter-compiler" />
             <option value="$PROJECT_DIR$/router" />
             <option value="$PROJECT_DIR$/router-annotation" />
             <option value="$PROJECT_DIR$/router-compiler" />
