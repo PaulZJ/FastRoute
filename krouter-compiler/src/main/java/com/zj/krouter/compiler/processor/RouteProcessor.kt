@@ -1,7 +1,10 @@
 package com.zj.krouter.compiler.processor
 
-import com.squareup.kotlinpoet.FileSpec
+import com.squareup.kotlinpoet.*
 import com.zj.krouter.compiler.Logger
+import com.zj.krouter_annotation.Route
+import com.zj.krouter_annotation.RouteType
+import com.zj.krouter_annotation.model.RouteMetadata
 import java.io.File
 import javax.annotation.processing.AbstractProcessor
 import javax.annotation.processing.ProcessingEnvironment
@@ -13,7 +16,6 @@ import javax.lang.model.util.Types
 /**
  * Created by zhangjun on 2018/4/23.
  */
-
 abstract class BaseProcessor: AbstractProcessor() {
 
     protected lateinit var mElements: Elements
@@ -66,3 +68,79 @@ abstract class BaseProcessor: AbstractProcessor() {
 
     abstract fun collectInfo(roundEnv: RoundEnvironment)
 }
+
+class RouteProcessor : BaseProcessor() {
+    private val routeMap = HashMap<String, RouteMetadata>()
+    override fun collectInfo(roundEnv: RoundEnvironment) {
+        routeMap.clear()
+        val elements = roundEnv.getElementsAnnotatedWith(Route::class.java)
+        if (elements.isEmpty()) {
+            return
+        }
+        mLogger.info("Found ${elements.size} routes in [$mOriginalModuleName]")
+
+        val tmActivity = mElements.getTypeElement(RouteType.ACTIVITY.className).asType()
+        val tmService = mElements.getTypeElement(RouteType.SERVICE.className).asType()
+        val tmFragment = mElements.getTypeElement(RouteType.FRAGMENT.className).asType()
+        val tmFragmentV4 = mElements.getTypeElement(RouteType.FRAGMENT_V4.className).asType()
+        val tmContentProvider = mElements.getTypeElement(RouteType.CONTENT_PROVIDER.className).asType()
+
+        val mapTypeOfRouteLoader = ParameterizedTypeName.get(ClassName("kotlin.conllections", "MutableMap"),
+                String::class.asClassName(), RouteMetadata::class.asClassName())
+
+        val routeLoaderFunSpecBuild = FunSpec.builder("loadInto")
+                .addParameter("map", mapTypeOfRouteLoader)
+                .addModifiers(KModifier.OVERRIDE)
+
+        elements.forEach {
+            val routeAnn = it.getAnnotation(Route::class.java)
+            val routeType = when {
+                mTypes.isSubtype(it.asType(), tmActivity) -> {
+                    mLogger.info("Found Activity ${it.asType()}")
+                }
+                mTypes.isSubtype(it.asType(), tmService) -> {
+                    mLogger.info("Found Service ${it.asType()}")
+                }
+                mTypes.isSubtype(it.asType(), tmFragment) -> {
+                    mLogger.info("Found Fragment ${it.asType()}")
+                }
+                mTypes.isSubtype(it.asType(), tmFragmentV4) -> {
+                    mLogger.info("Found Fragment_v4 ${it.asType()}")
+                }
+                mTypes.isSubtype(it.asType(), tmContentProvider) -> {
+                    mLogger.info("Found Content Provider ${it.asType()}")
+                }
+                else -> {
+                    mLogger.info("Unknown route ${it.asType()}")
+                }
+            }
+
+            if (routeAnn.path.isNotBlank()) {
+                if (routeMap.containsKey(routeAnn.path)) {
+                    mLogger.warning("The route ${routeMap[routeAnn.path]?.name} already has Path {${routeAnn.path}}," +
+                            " so skip route ${it.asType()}")
+                    return@forEach
+                }
+                routeMap[routeAnn.path] = RouteMetadata(name = it.asType().toString())
+
+                routeLoaderFunSpecBuild.addStatement(
+                        "map[%S] = %T(%T.%L, %L, %S, %S, %S, %S, %T::class.java)",
+                        routeAnn.path,
+                        RouteMetadata::class,
+                        RouteType::class,
+                        routeType,
+                        routeAnn.priority,
+                        routeAnn.name,
+                        routeAnn.path,
+                        routeAnn.pathPrefix,
+                        routeAnn.pathPattern,
+                        it.asType()
+                )
+            }
+        }
+
+//        val typeIRouteLoader = TypeSpec.classBuilder("$R")
+    }
+
+}
+
