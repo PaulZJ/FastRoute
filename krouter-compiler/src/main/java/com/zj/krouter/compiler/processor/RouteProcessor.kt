@@ -2,8 +2,10 @@ package com.zj.krouter.compiler.processor
 
 import com.squareup.kotlinpoet.*
 import com.zj.krouter.compiler.Logger
-import com.zj.krouter_annotation.Route
-import com.zj.krouter_annotation.RouteType
+import com.zj.krouter.compiler.PROVIDER_LOADER
+import com.zj.krouter.compiler.ROUTE_LOADER
+import com.zj.krouter.compiler.WARNINGS
+import com.zj.krouter_annotation.*
 import com.zj.krouter_annotation.model.RouteMetadata
 import java.io.File
 import javax.annotation.processing.AbstractProcessor
@@ -139,7 +141,17 @@ class RouteProcessor : BaseProcessor() {
             }
         }
 
-//        val typeIRouteLoader = TypeSpec.classBuilder("$R")
+        val typeIRouteLoader = TypeSpec.classBuilder("$ROUTE_LOADER_NAME$SEPARATOR$mFormatModuleName")
+                .addSuperinterface(ClassName.bestGuess(ROUTE_LOADER))
+                .addKdoc(WARNINGS)
+                .addFunction(routeLoaderFunSpecBuild.build())
+                .build()
+
+        val kotlinFile = FileSpec.builder(PACKAGE, "$ROUTE_LOADER_NAME.$SEPARATOR$mFormatModuleName")
+                .addType(typeIRouteLoader)
+                .build()
+
+        kotlinFile.writeFile()
     }
 
 }
