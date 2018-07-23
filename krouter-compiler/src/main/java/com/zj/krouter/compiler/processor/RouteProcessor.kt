@@ -3,9 +3,9 @@ package com.zj.krouter.compiler.processor
 import com.google.auto.service.AutoService
 import com.squareup.kotlinpoet.*
 import com.zj.krouter.compiler.*
-import com.zj.krouter_annotation.*
-import com.zj.krouter_annotation.model.InterceptorMetaData
-import com.zj.krouter_annotation.model.RouteMetadata
+import com.zj.annotation.*
+import com.zj.annotation.model.InterceptorMetaData
+import com.zj.annotation.model.RouteMetadata
 import org.jetbrains.annotations.NotNull
 import java.io.File
 import java.util.*
@@ -78,7 +78,10 @@ abstract class BaseProcessor: AbstractProcessor() {
 
     abstract fun collectInfo(roundEnv: RoundEnvironment)
 }
-
+@AutoService(Processor::class)
+@SupportedOptions(MODULE_NAME)
+@SupportedSourceVersion(SourceVersion.RELEASE_7)
+@SupportedAnnotationTypes(value = ["com.zj.annotation.Route"])
 class RouteProcessor : BaseProcessor() {
     private val routeMap = HashMap<String, RouteMetadata>()
     override fun collectInfo(roundEnv: RoundEnvironment) {

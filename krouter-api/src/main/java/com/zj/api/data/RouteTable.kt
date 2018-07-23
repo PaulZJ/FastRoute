@@ -1,9 +1,9 @@
 package com.zj.api.data
 
 import com.zj.api.interfaces.PathMatcher
-import com.zj.krouter_annotation.model.InjectorMetaData
-import com.zj.krouter_annotation.model.InterceptorMetaData
-import com.zj.krouter_annotation.model.RouteMetadata
+import com.zj.annotation.model.InjectorMetaData
+import com.zj.annotation.model.InterceptorMetaData
+import com.zj.annotation.model.RouteMetadata
 import java.util.*
 
 /**

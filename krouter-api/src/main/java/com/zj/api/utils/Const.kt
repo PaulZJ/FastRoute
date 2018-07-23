@@ -1,4 +1,4 @@
-package com.zj.api
+package com.zj.api.utils
 
 /**
  * Created by zhangjun on 2018/4/29.

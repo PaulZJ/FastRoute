@@ -6,8 +6,8 @@ import com.zj.api.data.RouteTable
 import com.zj.api.exceptions.HandleException
 import com.zj.api.interfaces.*
 import com.zj.api.utils.Logger
-import com.zj.krouter_annotation.*
-import com.zj.krouter_annotation.model.RouteMetadata
+import com.zj.annotation.*
+import com.zj.annotation.model.RouteMetadata
 import java.util.*
 
 /**

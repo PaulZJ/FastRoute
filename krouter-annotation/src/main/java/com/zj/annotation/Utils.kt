@@ -1,4 +1,4 @@
-package com.zj.krouter_annotation
+package com.zj.annotation
 
 /**
  * Created by zhangjun on 2018/4/26.

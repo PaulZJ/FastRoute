@@ -12,15 +12,15 @@ import android.support.annotation.IntDef
 import android.util.Size
 import android.util.SizeF
 import android.util.SparseArray
-import com.zj.api.SERIALIZE_PATH
+import com.zj.api.utils.SERIALIZE_PATH
 import com.zj.api.data.RouteTable
 import com.zj.api.interfaces.PathMatcher
 import com.zj.api.interfaces.SerializationProvider
 import com.zj.api.utils.Logger
-import com.zj.krouter_annotation.PROJECT_NAME
-import com.zj.krouter_annotation.SEPARATOR
-import com.zj.krouter_annotation.model.RouteMetadata
-import com.zj.krouter_annotation.transferModuleName
+import com.zj.annotation.PROJECT_NAME
+import com.zj.annotation.SEPARATOR
+import com.zj.annotation.model.RouteMetadata
+import com.zj.annotation.transferModuleName
 import java.io.Serializable
 import java.util.ArrayList
 

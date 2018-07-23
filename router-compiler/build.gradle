@@ -2,7 +2,7 @@ apply plugin: 'java-library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
-version = "0.1.1"
+version = "0.1.2"
 group = "com.zj.route"
 def siteUrl = 'https://github.com/PaulZJ/FastRoute'    // project homepage
 def gitUrl = 'https://github.com/PaulZJ/FastRoute.git' // project git
@@ -16,6 +16,10 @@ dependencies {
 sourceCompatibility = "1.7"
 targetCompatibility = "1.7"
 
+task sourcesJar(type: Jar) {
+    from sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
 
 // 根节点添加
 install {

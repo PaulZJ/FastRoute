@@ -1,6 +1,6 @@
-package com.zj.krouter_annotation.model
+package com.zj.annotation.model
 
-import com.zj.krouter_annotation.RouteType
+import com.zj.annotation.RouteType
 
 /**
  * Created by zhangjun on 2018/4/22.

@@ -4,11 +4,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.zj.router.Router;
-import com.zj.router.RouterHelper;
-import com.zj.router.annotation.RouterActivity;
+import com.zj.annotation.Route;
 
-@RouterActivity({"main"})
+@Route(path = "main")
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -18,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btn_second).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RouterHelper.getSecondActivityHelper().start(MainActivity.this);
+//                RouterHelper.getSecondActivityHelper().start(MainActivity.this);
             }
         });
     }

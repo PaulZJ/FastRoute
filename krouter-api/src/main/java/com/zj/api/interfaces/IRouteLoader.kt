@@ -2,8 +2,8 @@ package com.zj.api.interfaces
 
 import android.content.Context
 import android.os.Bundle
-import com.zj.krouter_annotation.model.InterceptorMetaData
-import com.zj.krouter_annotation.model.RouteMetadata
+import com.zj.annotation.model.InterceptorMetaData
+import com.zj.annotation.model.RouteMetadata
 import java.lang.reflect.Type
 import java.util.*
 

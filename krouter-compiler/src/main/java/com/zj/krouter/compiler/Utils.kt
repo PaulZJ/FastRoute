@@ -1,6 +1,6 @@
 package com.zj.krouter.compiler
 
-import com.zj.krouter_annotation.PACKAGE
+import com.zj.annotation.PACKAGE
 
 /**
  * Created by zhangjun on 2018/4/26.

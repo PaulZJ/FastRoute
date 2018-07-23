@@ -2,7 +2,7 @@ package com.zj.api.core
 
 import android.os.Bundle
 import com.zj.api.interfaces.IInjector
-import com.zj.krouter_annotation.getInjectorClass
+import com.zj.annotation.getInjectorClass
 
 /**
  * Created by zhangjun on 2018/4/29.

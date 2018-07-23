@@ -2,7 +2,7 @@ package com.zj.api.core
 
 import android.content.Context
 import com.zj.api.exceptions.HandleException
-import com.zj.krouter_annotation.model.RouteMetadata
+import com.zj.annotation.model.RouteMetadata
 
 /**
  * Created by zhangjun on 2018/4/29.

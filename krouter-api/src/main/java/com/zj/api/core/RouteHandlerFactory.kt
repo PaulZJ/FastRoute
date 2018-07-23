@@ -15,8 +15,8 @@ import android.widget.Toast
 import com.zj.api.exceptions.HandleException
 import com.zj.api.exceptions.RouteNotFoundException
 import com.zj.api.utils.Logger
-import com.zj.krouter_annotation.RouteType
-import com.zj.krouter_annotation.model.RouteMetadata
+import com.zj.annotation.RouteType
+import com.zj.annotation.model.RouteMetadata
 
 /**
  * Created by zhangjun on 2018/4/29.

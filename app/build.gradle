@@ -1,10 +1,19 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+
+kapt {
+    arguments {
+        arg("app", project.getName())
+    }
+}
 
 android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "com.zj.fastroute"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -24,9 +33,15 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    implementation 'com.zj.route:router:0.1.5@aar'
+    //    implementation 'com.zj.route:router:0.1.5@aar'
     //    implementation project(':router')
     //    annotationProcessor 'com.zj.route:router-compiler:0.1.1'
-    annotationProcessor project(':router-compiler')
-    implementation project(':router-annotation')
+    //    annotationProcessor project(':router-compiler')
+    //    implementation project(':router-annotation')
+    //    implementation 'com.zj.route:router-annotation:0.1.3'
+    implementation project(':krouter-annotation')
+    implementation project(':krouter-api')
+    kapt project(':krouter-compiler')
+//    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jre8:1.2.30'
+
 }
