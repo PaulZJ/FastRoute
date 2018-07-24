@@ -4,10 +4,10 @@ package com.zj.annotation
  * Created by zhangjun on 2018/4/26.
  */
 
-const val PACKAGE = "com.krouter"
+const val PACKAGE = "com.zj"
 const val SEPARATOR = "_"
 const val PROJECT_NAME = "KRouter"
-const val ROUTE_LOADER_NAME = "$PROJECT_NAME{$SEPARATOR}RouteLoader"
+const val ROUTE_LOADER_NAME = "$PROJECT_NAME${SEPARATOR}RouteLoader"
 const val INTERCEPTOR_LOADER_NAME = "$PROJECT_NAME${SEPARATOR}InterceporLoader"
 const val PROVIDER_LOADER_NAME = "$PROJECT_NAME${SEPARATOR}ProviderLoader"
 const val INJECTOR_NAME = "$PROJECT_NAME${SEPARATOR}Injector"

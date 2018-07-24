@@ -2,6 +2,7 @@ package com.zj.api.core
 
 import android.app.Fragment
 import android.content.Context
+import android.util.Log
 import com.zj.api.data.RouteTable
 import com.zj.api.exceptions.HandleException
 import com.zj.api.interfaces.*
@@ -17,7 +18,7 @@ import java.util.*
 internal class Router private constructor() {
 
     internal lateinit var context: Context
-    private val PACKAGE = "com.zj.krouter"
+    private val PACKAGE = "com.zj."
     internal object Inner {
         val instance = Router()
     }
@@ -38,7 +39,7 @@ internal class Router private constructor() {
             if(moduleName.isBlank()) {
                 return@forEach
             }
-
+            Log.e("zj test", "$PACKAGE$ROUTE_LOADER_NAME$SEPARATOR$moduleName")
             (loadClassForName("$PACKAGE$INTERCEPTOR_LOADER_NAME$SEPARATOR$moduleName")?.newInstance() as? IInterceptorLoader)?.loadInto(RouteTable.interceptors)
             (loadClassForName("$PACKAGE$PROVIDER_LOADER_NAME$SEPARATOR$moduleName")?.newInstance() as? IProviderLoader)?.loadInto(RouteTable.providers)
             (loadClassForName("$PACKAGE$ROUTE_LOADER_NAME$SEPARATOR$moduleName")?.newInstance() as? IRouteLoader)?.loadInto(RouteTable.routes)

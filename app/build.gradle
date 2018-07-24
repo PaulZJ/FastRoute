@@ -5,7 +5,7 @@ apply plugin: 'kotlin-kapt'
 
 kapt {
     arguments {
-        arg("app", project.getName())
+        arg("moduleName", project.getName())
     }
 }
 
@@ -42,6 +42,6 @@ dependencies {
     implementation project(':krouter-annotation')
     implementation project(':krouter-api')
     kapt project(':krouter-compiler')
-//    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jre8:1.2.30'
-
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.30'
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.2.30"
 }

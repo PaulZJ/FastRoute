@@ -32,6 +32,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation project(':krouter-annotation')
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jre8:1.2.30'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.30'
 
 }

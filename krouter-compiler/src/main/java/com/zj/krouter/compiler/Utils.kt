@@ -6,7 +6,7 @@ import com.zj.annotation.PACKAGE
  * Created by zhangjun on 2018/4/26.
  */
 
-const val ROUTE_LOADER = "$PACKAGE.api.interfaces.IrouteLoader"
+const val ROUTE_LOADER = "$PACKAGE.api.interfaces.IRouteLoader"
 const val INTERCEPOR_LOADER = "$PACKAGE.api.interfaces.IInterceptorLoader"
 const val PROVIDER_LOADER = "$PACKAGE.api.interfaces.IProviderLoader"
 const val INJECTOR = "$PACKAGE.api.interfaces.IInjector"
@@ -25,7 +25,7 @@ const val NP_EXCEPTION = "$LANG.NullPointerException"
 const val ILLEGAL_ARGUMENT_EXCEPTION = "$LANG.IllegalArgumentException"
 
 const val METADATA = "kotlin.Metadata"
-const val NONULL = "android.support.annotation.NonNull"
+const val NONNULL = "android.support.annotation.NonNull"
 
 const val KAPT_KOTLIN_GENERATED_OPTION_NAME = "kapt.kotlin.generated"
 

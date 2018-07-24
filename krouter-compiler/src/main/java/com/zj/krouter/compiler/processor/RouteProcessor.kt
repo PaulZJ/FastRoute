@@ -98,7 +98,7 @@ class RouteProcessor : BaseProcessor() {
         val tmFragmentV4 = mElements.getTypeElement(RouteType.FRAGMENT_V4.className).asType()
         val tmContentProvider = mElements.getTypeElement(RouteType.CONTENT_PROVIDER.className).asType()
 
-        val mapTypeOfRouteLoader = ParameterizedTypeName.get(ClassName("kotlin.conllections", "MutableMap"),
+        val mapTypeOfRouteLoader = ParameterizedTypeName.get(ClassName("kotlin.collections", "MutableMap"),
                 String::class.asClassName(), RouteMetadata::class.asClassName())
 
         val routeLoaderFunSpecBuild = FunSpec.builder("loadInto")
@@ -110,21 +110,27 @@ class RouteProcessor : BaseProcessor() {
             val routeType = when {
                 mTypes.isSubtype(it.asType(), tmActivity) -> {
                     mLogger.info("Found Activity ${it.asType()}")
+                    RouteType.ACTIVITY
                 }
                 mTypes.isSubtype(it.asType(), tmService) -> {
                     mLogger.info("Found Service ${it.asType()}")
+                    RouteType.SERVICE
                 }
                 mTypes.isSubtype(it.asType(), tmFragment) -> {
                     mLogger.info("Found Fragment ${it.asType()}")
+                    RouteType.FRAGMENT
                 }
                 mTypes.isSubtype(it.asType(), tmFragmentV4) -> {
                     mLogger.info("Found Fragment_v4 ${it.asType()}")
+                    RouteType.FRAGMENT_V4
                 }
                 mTypes.isSubtype(it.asType(), tmContentProvider) -> {
                     mLogger.info("Found Content Provider ${it.asType()}")
+                    RouteType.CONTENT_PROVIDER
                 }
                 else -> {
                     mLogger.info("Unknown route ${it.asType()}")
+                    RouteType.UNKNOWN
                 }
             }
 
@@ -158,7 +164,7 @@ class RouteProcessor : BaseProcessor() {
                 .addFunction(routeLoaderFunSpecBuild.build())
                 .build()
 
-        val kotlinFile = FileSpec.builder(PACKAGE, "$ROUTE_LOADER_NAME.$SEPARATOR$mFormatModuleName")
+        val kotlinFile = FileSpec.builder(PACKAGE, "$ROUTE_LOADER_NAME$SEPARATOR$mFormatModuleName")
                 .addType(typeIRouteLoader)
                 .build()
 
@@ -454,7 +460,7 @@ class InjectProcessor: BaseProcessor() {
     }
 
     private fun Element.asNonNullable(): String {
-        val tmNonNull = mElements.getTypeElement(NONULL).asType()
+        val tmNonNull = mElements.getTypeElement(NONNULL).asType()
 
         return if (getAnnotation(NotNull::class.java) != null
                 || this.annotationMirrors.find { it.annotationType == tmNonNull } != null) {
