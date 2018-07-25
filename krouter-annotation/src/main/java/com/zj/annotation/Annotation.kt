@@ -6,6 +6,7 @@ package com.zj.annotation
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.SOURCE)
 annotation class Route(
+        /** route path */
         val path: String,
         val pathPrefix: String = "",
         val pathPattern: String = "",

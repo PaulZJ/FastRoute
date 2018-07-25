@@ -12,17 +12,17 @@ import android.support.annotation.IntDef
 import android.util.Size
 import android.util.SizeF
 import android.util.SparseArray
-import com.zj.api.utils.SERIALIZE_PATH
-import com.zj.api.data.RouteTable
-import com.zj.api.interfaces.PathMatcher
-import com.zj.api.interfaces.SerializationProvider
-import com.zj.api.utils.Logger
 import com.zj.annotation.PROJECT_NAME
 import com.zj.annotation.SEPARATOR
 import com.zj.annotation.model.RouteMetadata
 import com.zj.annotation.transferModuleName
+import com.zj.api.data.RouteTable
+import com.zj.api.interfaces.PathMatcher
+import com.zj.api.interfaces.SerializationProvider
+import com.zj.api.utils.Logger
+import com.zj.api.utils.SERIALIZE_PATH
 import java.io.Serializable
-import java.util.ArrayList
+import java.util.*
 
 /**
  * Created by zhangjun on 2018/4/29.
@@ -37,8 +37,8 @@ object KRouter {
     }
 
     /**
-     * 创建一个Navigator 用以发起一个路由请求
-     * @param path 路由地址
+     * Create an instance of Navigator for Route Request
+     * @param path route path
      * @return Navigator
      */
     fun create(path: String): Navigator {
@@ -46,8 +46,8 @@ object KRouter {
     }
 
     /**
-     * 创建一个Navigator 用以发起一个路由请求
-     * @param uri 路由地址
+     * Create an instance of Navigator for Route Request
+     * @param uri Uri of route path
      * @return Navigator
      */
     fun create(uri: Uri): Navigator {
@@ -55,8 +55,8 @@ object KRouter {
     }
 
     /**
-     * 自定义匹配器规则 默认匹配规则直接判断两个字符串是否相同，你可以通过该函数自由添加匹配器
-     * @param block 一个带参数的lambda表达式 参数类型为MutableList<PathMatcher>，该列表存放有默认的匹配器
+     * handle with PathMatcher
+     * @param block lambda expression to handle matchers
      * @return KRouter
      */
     fun handleMatcher(block: (MutableList<PathMatcher>) -> Unit): KRouter {
@@ -65,8 +65,8 @@ object KRouter {
     }
 
     /**
-     * 自定义添加路由表
-     * @param block 一个带参数的lambda表达式 参数类型为MutableMap<String, RouteMetadata>，该map中存有所有被注解的路由，删除后将会导致路由器寻址失败
+     * handle With RouteTable
+     * @param block lambda expression to handle map of routes
      * @return KRouter
      */
     fun addRoutePath(block: (MutableMap<String, RouteMetadata>) -> Unit): KRouter {
@@ -75,10 +75,9 @@ object KRouter {
     }
 
     /**
-     * 调用该函数后为对应对象中添加了[com.github.richardwrq.krouter.annotation.Inject]注解的字段从bundle中取出实例对该字段进行赋值,
-     * bundle中的key值对应[com.github.richardwrq.krouter.annotation.Inject]注解中的key值，如果注解中的key未设置，则使用字段的名称作为bundle中的key取出value
-     * @param instance
-     * @param bundle
+     * handle Route Params for specific Route Target
+     * @param instance route target
+     * @param bundle bundle with route params
      */
     @JvmOverloads
     fun inject(instance: Any, bundle: Bundle? = null) {
@@ -86,7 +85,7 @@ object KRouter {
     }
 
     /**
-     * 开启日志
+     * open debug mode
      */
     @JvmStatic
     fun openDebug() {
@@ -94,9 +93,9 @@ object KRouter {
     }
 
     /**
-     * 获取当前项目所有module
+     * list all modules
      * @param context context
-     * @return module名称列表
+     * @return the list of module names
      */
     fun listAllModules(context: Context): List<String> {
         return context.assets.list("").filter { it.startsWith("$PROJECT_NAME$SEPARATOR") }.map { transferModuleName(it) }

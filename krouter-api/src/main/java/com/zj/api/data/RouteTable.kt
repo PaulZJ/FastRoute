@@ -9,6 +9,10 @@ import java.util.*
 /**
  * Created by zhangjun on 2018/4/29.
  */
+
+/**
+ * Data Holder for Route Internal
+ */
 internal object RouteTable {
     internal val routes = HashMap<String, RouteMetadata>()
     internal val providers = HashMap<String, Class<*>>()
