@@ -14,10 +14,15 @@ import java.util.*
  * Data Holder for Route Internal
  */
 internal object RouteTable {
+    /** route table */
     internal val routes = HashMap<String, RouteMetadata>()
+    /** Provider Table for App Services */
     internal val providers = HashMap<String, Class<*>>()
+    /** Injectors Table for each route target */
     internal val injectors = HashMap<String, List<InjectorMetaData>>()
+    /** Interceptors Table for Navigators */
     internal val interceptors = TreeMap<Int, InterceptorMetaData>()
+    /** Matcher Pattern Table */
     internal val matchers = mutableListOf<PathMatcher>(DefaultMatcher)
 
     fun clear() {

@@ -33,19 +33,24 @@ internal class Router private constructor() {
 
     }
 
+    /**
+     * load RouteTable by moduleName got from assets
+     */
     private fun loadRouteTable() {
         context.assets.list("").filter { it.startsWith("$PROJECT_NAME$SEPARATOR") }.forEach {
             val  moduleName = transferModuleName(it)
             if(moduleName.isBlank()) {
                 return@forEach
             }
-            Log.e("zj test", "$PACKAGE$ROUTE_LOADER_NAME$SEPARATOR$moduleName")
             (loadClassForName("$PACKAGE$INTERCEPTOR_LOADER_NAME$SEPARATOR$moduleName")?.newInstance() as? IInterceptorLoader)?.loadInto(RouteTable.interceptors)
             (loadClassForName("$PACKAGE$PROVIDER_LOADER_NAME$SEPARATOR$moduleName")?.newInstance() as? IProviderLoader)?.loadInto(RouteTable.providers)
             (loadClassForName("$PACKAGE$ROUTE_LOADER_NAME$SEPARATOR$moduleName")?.newInstance() as? IRouteLoader)?.loadInto(RouteTable.routes)
         }
     }
 
+    /**
+     * get Class from className
+     */
     private fun loadClassForName(className: String): Class<*>? {
         return try {
             Class.forName(className)
@@ -54,6 +59,10 @@ internal class Router private constructor() {
         }
     }
 
+    /**
+     * route Providers for App Services</br>
+     * just call init() method
+     */
     fun route(path: String): Any? {
         val clazz = RouteTable.providers[path]?: return null
         val instance = clazz.newInstance()
@@ -63,6 +72,10 @@ internal class Router private constructor() {
         return instance
     }
 
+    /**
+     * route for Android Common Component </br>
+     * etc. Activity, Fragment, ContentProvicer...
+     */
     fun route(navigator: KRouter.Navigator): Any? {
         val map = addressingComponent(navigator)
         if (map.isEmpty()) {
@@ -96,6 +109,9 @@ internal class Router private constructor() {
         return null
     }
 
+    /**
+     * search for matched Components for specific navigator
+     */
     private fun addressingComponent(navigator: KRouter.Navigator): Map<String, RouteMetadata> {
         Logger.d("Addressing >> ${navigator.path}")
         return RouteTable.routes.filterKeys {
@@ -105,10 +121,16 @@ internal class Router private constructor() {
         }
     }
 
+    /**
+     * create Event Handler for each RouteMetaData
+     */
     private fun createRouteHandler(map: Map<String, RouteMetadata>): List<AbsRouteHandler> {
         return map.map { createHandler(it.value) }.sortedWith(RoutePriorityComparator)
     }
 
+    /**
+     * whether intercept this route navigator
+     */
     private fun isIntercept(navigator: KRouter.Navigator): Boolean {
         return RouteTable.interceptors.asSequence().find {
             try {
@@ -125,6 +147,9 @@ internal class Router private constructor() {
         } != null
     }
 
+    /**
+     * Comparator for route priority
+     */
     object RoutePriorityComparator : Comparator<AbsRouteHandler> {
         override fun compare(o1: AbsRouteHandler, o2: AbsRouteHandler): Int = o1.routeMetadata.priority - o2.routeMetadata.priority
     }

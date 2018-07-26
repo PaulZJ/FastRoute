@@ -26,15 +26,17 @@ interface IProviderLoader {
     fun loadInto(map: MutableMap<String, Class<*>>)
 }
 
-
+/** Interceptor for Route Request */
 interface IRouteInterceptor {
     fun intercept(context: Context, path: String, extras: Bundle): Boolean
 }
 
+/** Provider for App Services */
 interface IProvider {
     fun init(context: Context)
 }
 
+/** Matcher Pattern */
 interface PathMatcher {
     fun match(path: String, path2: String): Boolean
 }
@@ -44,6 +46,7 @@ interface IInjector {
     fun inject(any: Any, extras: Bundle?)
 }
 
+/** for Serialization Provider */
 interface SerializationProvider: IProvider {
     fun <T> parseObject(text: String?, clazz: Type): T?
 

@@ -5,6 +5,7 @@ import android.util.Log
 /**
  * Created by zhangjun on 2018/4/29.
  */
+@Deprecated(message = "to be replaced soon")
 class Logger {
     companion object {
         private val PREFIX = "[KRouter]::"

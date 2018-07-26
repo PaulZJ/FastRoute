@@ -22,6 +22,9 @@ import com.zj.annotation.model.RouteMetadata
  * Created by zhangjun on 2018/4/29.
  */
 
+/**
+ * handle by RouteMetadata Types
+ */
 internal fun createHandler(routeMetadata: RouteMetadata): AbsRouteHandler {
     return when (routeMetadata.routeType) {
         RouteType.ACTIVITY -> {
@@ -47,7 +50,7 @@ internal fun createHandler(routeMetadata: RouteMetadata): AbsRouteHandler {
 
 
 /**
- * 未知类型
+ * unkown type of RouteMetadata
  */
 internal class UnknownRouteHandler(routeMetadata: RouteMetadata) : AbsRouteHandler(routeMetadata) {
     override fun handle(context: Context, navigator: KRouter.Navigator) {
