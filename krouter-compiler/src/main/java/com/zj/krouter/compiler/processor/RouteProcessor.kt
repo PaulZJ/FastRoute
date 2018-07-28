@@ -26,6 +26,7 @@ import kotlin.reflect.jvm.internal.impl.platform.JavaToKotlinClassMap
 /**
  * Created by zhangjun on 2018/4/23.
  */
+
 abstract class BaseProcessor: AbstractProcessor() {
 
     protected lateinit var mElements: Elements
@@ -40,6 +41,7 @@ abstract class BaseProcessor: AbstractProcessor() {
         mTypes = p0!!.typeUtils
         mLogger = Logger(p0!!.messager)
 
+        // get options property in build.gradle
         val options = p0.options
         if (options.isNotEmpty()) {
             mOriginalModuleName = options["moduleName"] ?: ""
@@ -53,6 +55,7 @@ abstract class BaseProcessor: AbstractProcessor() {
             return false
         }
 
+        //must have module Name; make module route table based on this module name
         if (mOriginalModuleName.isBlank()) {
             mLogger.warning("this module name is null!!! skip this module")
             return false
@@ -92,21 +95,28 @@ class RouteProcessor : BaseProcessor() {
         }
         mLogger.info("Found ${elements.size} routes in [$mOriginalModuleName]")
 
+        // type for Activity
         val tmActivity = mElements.getTypeElement(RouteType.ACTIVITY.className).asType()
+        // type for Service
         val tmService = mElements.getTypeElement(RouteType.SERVICE.className).asType()
+        // type for Fragment
         val tmFragment = mElements.getTypeElement(RouteType.FRAGMENT.className).asType()
+        // type for FragmentV4
         val tmFragmentV4 = mElements.getTypeElement(RouteType.FRAGMENT_V4.className).asType()
+        // type for ContentProvider
         val tmContentProvider = mElements.getTypeElement(RouteType.CONTENT_PROVIDER.className).asType()
 
         val mapTypeOfRouteLoader = ParameterizedTypeName.get(ClassName("kotlin.collections", "MutableMap"),
                 String::class.asClassName(), RouteMetadata::class.asClassName())
 
-        val routeLoaderFunSpecBuild = FunSpec.builder("loadInto")
-                .addParameter("map", mapTypeOfRouteLoader)
+        // make function for loading route table
+        val routeLoaderFunSpecBuild = FunSpec.builder("loadInto") // fuction name
+                .addParameter("map", mapTypeOfRouteLoader) // input param
                 .addModifiers(KModifier.OVERRIDE)
 
         elements.forEach {
             val routeAnn = it.getAnnotation(Route::class.java)
+            //get route type for each element
             val routeType = when {
                 mTypes.isSubtype(it.asType(), tmActivity) -> {
                     mLogger.info("Found Activity ${it.asType()}")
@@ -136,35 +146,36 @@ class RouteProcessor : BaseProcessor() {
 
             if (routeAnn.path.isNotBlank()) {
                 if (routeMap.containsKey(routeAnn.path)) {
+                    // bad case
                     mLogger.warning("The route ${routeMap[routeAnn.path]?.name} already has Path {${routeAnn.path}}," +
                             " so skip route ${it.asType()}")
                     return@forEach
                 }
-                routeMap[routeAnn.path] = RouteMetadata(name = it.asType().toString())
+                routeMap[routeAnn.path] = RouteMetadata(name = it.asType().toString()) // route type
 
                 routeLoaderFunSpecBuild.addStatement(
                         "map[%S] = %T(%T.%L, %L, %S, %S, %S, %S, %T::class.java)",
                         routeAnn.path,
                         RouteMetadata::class,
                         RouteType::class,
-                        routeType,
+                        routeType,  //enum value
                         routeAnn.priority,
                         routeAnn.name,
                         routeAnn.path,
                         routeAnn.pathPrefix,
                         routeAnn.pathPattern,
-                        it.asType()
+                        it.asType() // Class instance type
                 )
             }
         }
 
-        val typeIRouteLoader = TypeSpec.classBuilder("$ROUTE_LOADER_NAME$SEPARATOR$mFormatModuleName")
-                .addSuperinterface(ClassName.bestGuess(ROUTE_LOADER))
+        val typeIRouteLoader = TypeSpec.classBuilder("$ROUTE_LOADER_NAME$SEPARATOR$mFormatModuleName") //Class Name
+                .addSuperinterface(ClassName.bestGuess(ROUTE_LOADER))   // implement interface
                 .addKdoc(WARNINGS)
                 .addFunction(routeLoaderFunSpecBuild.build())
                 .build()
 
-        val kotlinFile = FileSpec.builder(PACKAGE, "$ROUTE_LOADER_NAME$SEPARATOR$mFormatModuleName")
+        val kotlinFile = FileSpec.builder(PACKAGE, "$ROUTE_LOADER_NAME$SEPARATOR$mFormatModuleName")//Class File
                 .addType(typeIRouteLoader)
                 .build()
 
