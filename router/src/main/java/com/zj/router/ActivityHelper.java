@@ -11,17 +11,25 @@ import java.util.Set;
 
 /**
  * Created by zhangjun on 2018/1/24.
+ *
+ * Activity 跳转的帮助类
+ *
+ * <p>通过apt的方式自动生成每个Activity跳转的帮助类，自动拼接url</p>
  */
 
 public class ActivityHelper {
+
+    /** 跳转Activity的Path */
     protected final String host;
 
     public ActivityHelper(String host) {
         this.host = host;
     }
 
+    /** Activity跳转所携带的参数 */
     protected Map<String, String> params = new HashMap<>();
 
+    /** 拼接跳转的url */
     public String getUrl() {
         StringBuilder builder = new StringBuilder();
         builder.append(Router.getScheme()).append("://").append(host);

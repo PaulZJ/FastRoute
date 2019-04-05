@@ -6,9 +6,12 @@ import android.content.Context;
 
 /**
  * Created by zhangjun on 2018/1/24.
+ *
+ * 拦截逻辑？
  */
 
 public interface Filter {
+
     String doFilter(String url);
 
     boolean startActivityForResult(Activity activity, String url, int requestCode);

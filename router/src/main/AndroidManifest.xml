@@ -1,2 +1,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.zj.router"/>
+    package="com.zj.router">
+
+    <application>
+        <activity android:name=".RouterCenterActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data
+                    android:host="demo"
+                    android:path="/center"
+                    android:scheme="artist" />
+            </intent-filter>
+        </activity>
+
+    </application>
+</manifest>

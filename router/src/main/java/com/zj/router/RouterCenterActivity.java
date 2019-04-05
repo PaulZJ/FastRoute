@@ -9,6 +9,8 @@ import android.util.Log;
 
 /**
  * Created by zhangjun on 2018/1/24.
+ *
+ * 应用外部唤起的统一入口
  */
 
 public class RouterCenterActivity extends Activity {

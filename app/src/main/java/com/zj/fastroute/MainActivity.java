@@ -1,10 +1,9 @@
 package com.zj.fastroute;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.zj.router.Router;
 import com.zj.router.RouterHelper;
 import com.zj.router.annotation.RouterActivity;
 

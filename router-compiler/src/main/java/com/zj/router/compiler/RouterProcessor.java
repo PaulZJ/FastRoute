@@ -31,6 +31,7 @@ import javax.lang.model.util.Elements;
 @AutoService(Processor.class)
 public class RouterProcessor extends AbstractProcessor{
     private Elements elementUtils;
+    /** 获取本模块的名字 */
     private String targetModuleName = "";
 
     @Override
@@ -45,7 +46,9 @@ public class RouterProcessor extends AbstractProcessor{
         }
 
         Set<? extends Element> elements = roundEnvironment.getElementsAnnotatedWith(RouterActivity.class);
+        //获取基类
         ClassName activityRouteTableInitializer = ClassName.get("com.zj.router", "RouterInitializer");
+        // 生成每个模块的路由表
         TypeSpec.Builder typeSpec = TypeSpec.classBuilder((targetModuleName.length() == 0 ? "Apt" : targetModuleName) + "RouterInitializer")
                 .addSuperinterface(activityRouteTableInitializer)
                 .addModifiers(Modifier.PUBLIC)
@@ -73,6 +76,7 @@ public class RouterProcessor extends AbstractProcessor{
             for (String key : routerActivity.value()) {
                 bindViewMethodSpecBuilder.addStatement("arg0.put($S, $T.class)", key, typeElement.asType());
             }
+            //生成每个Activity的跳转Helper
             ClassName className = buildActivityHelper(routerActivity.value()[0], activityHelperClassName, (TypeElement) element);
 
             MethodSpec methodSpec = MethodSpec.methodBuilder("get" + className.simpleName())
@@ -82,13 +86,15 @@ public class RouterProcessor extends AbstractProcessor{
                     .build();
             methodSpecs.add(methodSpec);
         }
+
+        //生成本模块的RouteHelper
         TypeSpec typeSpecRouterHelper = TypeSpec.classBuilder(targetModuleName + "RouterHelper")
                 .addModifiers(Modifier.PUBLIC)
                 .addMethods(methodSpecs)
                 .build();
         JavaFile javaFileRouterHelper = JavaFile.builder("com.zj.router", typeSpecRouterHelper).build();
 
-
+        //生成本模块的RouterInitializer
         JavaFile javaFile = JavaFile.builder("com.zj.router", typeSpec.addMethod(bindViewMethodSpecBuilder.build())
                 .build()).build();
         try {
@@ -123,6 +129,14 @@ public class RouterProcessor extends AbstractProcessor{
         return SourceVersion.RELEASE_7;
     }
 
+    /**
+     * 生成各个Activity的跳转Helper对象
+     *
+     * @param routerActivityName
+     * @param activityHelperClassName
+     * @param typeElement
+     * @return
+     */
     private ClassName buildActivityHelper(String routerActivityName, ClassName activityHelperClassName, TypeElement typeElement) {
         List<? extends Element> members = elementUtils.getAllMembers(typeElement);
         List<MethodSpec> methodSpecs = new ArrayList<>();

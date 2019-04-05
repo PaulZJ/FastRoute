@@ -30,6 +30,12 @@ public class Router {
 
     }
 
+    /**
+     *  通过反射获取本类、以及所有父类的字段列表
+     *
+     * @param clazz
+     * @return
+     */
     private static List<Field> getDeclaredFields(Class clazz) {
         List<Field> fieldList = new ArrayList<>();
         for (; clazz != Object.class; clazz = clazz.getSuperclass()) {
@@ -41,6 +47,11 @@ public class Router {
         return fieldList;
     }
 
+    /**
+     * 通过反射的方式，将Intent中的参数赋值给特定字段
+     *
+     * @param activity
+     */
     public static void inject(Activity activity) {
         SafeBundle bundle = new SafeBundle(activity.getIntent().getExtras(), activity.getIntent().getData());
         Class clazz = activity.getClass();
@@ -106,10 +117,22 @@ public class Router {
         }
     }
 
+    /**
+     * 注册路由跳转信息
+     *
+     * @param routerInitializer
+     */
     public static void register(RouterInitializer routerInitializer) {
         routerInitializer.init(mRouter);
     }
 
+    /**
+     * 获取需要跳转的Activity
+     *
+     * @param url
+     * @param uri
+     * @return
+     */
     private static Class<? extends Activity> getActivityClass(String url, Uri uri) {
         String key;
         int tmp = url.indexOf("?");
@@ -129,6 +152,13 @@ public class Router {
         return null;
     }
 
+    /**
+     * 实际执行Activity跳转
+     *
+     * @param context
+     * @param url
+     * @return
+     */
     public static boolean startActivity(Context context, String url) {
         if (mFilter != null) {
             url = mFilter.doFilter(url);
@@ -155,6 +185,14 @@ public class Router {
         return false;
     }
 
+    /**
+     * 实际执行ActivityForResult跳转
+     *
+     * @param activity
+     * @param url
+     * @param requestCode
+     * @return
+     */
     public static boolean startActivityForResult(Activity activity, String url, int requestCode) {
         if (mFilter != null) {
             url = mFilter.doFilter(url);
@@ -178,6 +216,14 @@ public class Router {
         return false;
     }
 
+    /**
+     * 实际执行ActivityForResult跳转
+     *
+     * @param fragment
+     * @param url
+     * @param requestCode
+     * @return
+     */
     public static boolean startActivityForResult(Fragment fragment, String url, int requestCode) {
         if (mFilter != null) {
             url = mFilter.doFilter(url);
@@ -201,6 +247,14 @@ public class Router {
         return false;
     }
 
+    /**
+     * 实际执行ActivityForResult跳转
+     *
+     * @param fragment
+     * @param url
+     * @param requestCode
+     * @return
+     */
     public static boolean startActivityForResult(android.support.v4.app.Fragment fragment, String url, int
             requestCode) {
         if (mFilter != null) {
@@ -237,6 +291,11 @@ public class Router {
         return mScheme;
     }
 
+    /**
+     * 初始化路由框架
+     * <p>自动注册相关路由表<p/>
+     * @param scheme
+     */
     public static void init(String scheme) {
         Router.mScheme = scheme;
         try {
