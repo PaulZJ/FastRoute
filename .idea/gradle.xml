@@ -12,9 +12,6 @@
             <option value="$PROJECT_DIR$/krouter-annotation" />
             <option value="$PROJECT_DIR$/krouter-api" />
             <option value="$PROJECT_DIR$/krouter-compiler" />
-            <option value="$PROJECT_DIR$/router" />
-            <option value="$PROJECT_DIR$/router-annotation" />
-            <option value="$PROJECT_DIR$/router-compiler" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

@@ -1,1 +1,1 @@
-include ':app', ':router-annotation', ':router-compiler', ':router', ':krouter-annotation', ':krouter-compiler', ':krouter-api'
+include ':app',':krouter-annotation', ':krouter-compiler', ':krouter-api'
